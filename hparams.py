@@ -1,11 +1,27 @@
-import tensorflow as tf
+import logging
 from text import symbols
 
+# Set up logging
+logging.basicConfig(level=logging.INFO)
+
+class HParams:
+    def __init__(self, **kwargs):
+        self.__dict__.update(kwargs)
+
+    def parse(self, hparams_string):
+        # Parses and overrides hyperparameters from a string
+        for param in hparams_string.split(","):
+            key, value = param.split("=")
+            if key in self.__dict__:
+                self.__dict__[key.strip()] = type(self.__dict__[key.strip()])(value.strip())
+
+    def values(self):
+        return self.__dict__
 
 def create_hparams(hparams_string=None, verbose=False):
     """Create model hyperparameters. Parse nondefault from given string."""
 
-    hparams = tf.contrib.training.HParams(
+    hparams = HParams(
         ################################
         # Experiment Parameters        #
         ################################
@@ -86,10 +102,10 @@ def create_hparams(hparams_string=None, verbose=False):
     )
 
     if hparams_string:
-        tf.logging.info('Parsing command line hparams: %s', hparams_string)
+        logging.info('Parsing command line hparams: %s', hparams_string)
         hparams.parse(hparams_string)
 
     if verbose:
-        tf.logging.info('Final parsed hparams: %s', hparams.values())
+        logging.info('Final parsed hparams: %s', hparams.values())
 
     return hparams
