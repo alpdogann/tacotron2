@@ -1,3 +1,7 @@
+# Welcome to the Project
+
+You can view the detailed changes I made in this project in the [Changes Documentation](changes.md).
+
 # Tacotron 2 (without wavenet)
 
 PyTorch implementation of [Natural TTS Synthesis By Conditioning
